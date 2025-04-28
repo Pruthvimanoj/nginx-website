@@ -6,21 +6,26 @@ on:
       - main
 
 jobs:
-  deplou:
+  deploy:  # fixed typo
     runs-on: ubuntu-latest
 
     steps:
-      - name: checkout code
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Docker
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build docker image
-        run: Docker build -t my-nginx-website .
+      - name: Install Docker Engine
+        uses: docker/setup-docker@v2
+        with:
+          version: 20.10.24
 
-      - name: run docker container
-        run:
+      - name: Build docker image
+        run: docker build -t my-nginx-website .  # fixed lowercase docker
+
+      - name: Run docker container
+        run: |
           docker stop nginx-container || true
           docker rm nginx-container || true
-          docker run -d -p 80:80 --name nginx-container my-nginx-website
+          docker run -d -p 80:80 --name nginx-container my-ng
