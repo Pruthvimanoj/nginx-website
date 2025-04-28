@@ -17,10 +17,14 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build docker image
-        run: docker build -t my-nginx-website .  # small d in docker
+        run: docker build -t my-nginx-website .
 
       - name: Run docker container
         run: |
           docker stop nginx-container || true
           docker rm nginx-container || true
           docker run -d -p 80:80 --name nginx-container my-nginx-website
+
+      - name: Test Nginx locally in runner
+        run: |
+          curl -v http://localhost
